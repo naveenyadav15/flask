@@ -70,6 +70,11 @@ def register():
         # Create Cursor
         cur = mysql.connection.cursor()
 
+        result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+        if result > 0:
+            cur.close()
+            flash('Username already exist. Choose another Username','danger')
+            return render_template('register.html',form=form)
         # Execute query
         cur.execute("INSERT INTO users(name,email,username,password) VALUES(%s, %s, %s, %s)",(name, email, username, password))
 
